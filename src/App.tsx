@@ -11,9 +11,6 @@ function App() {
         <li>
           <ButtonLink as={Link} to="/components">Components</ButtonLink>
         </li>
-        <li>
-          <ButtonLink href="/components">Components</ButtonLink>
-        </li>
       </ul>
     </>
   )

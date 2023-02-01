@@ -114,9 +114,9 @@ export const Components = ()  => {
             </ButtonLink>
         </div>
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginTop: '20px' }}>
-          <ButtonLink href="/">Home (HTML anchor)</ButtonLink>
-          <ButtonLink href="/components">Components Home (HTML anchor)</ButtonLink>
-          <ButtonLink href="/components" disabled>Components Home (HTML anchor)</ButtonLink>
+          <ButtonLink href="#">Home (HTML anchor)</ButtonLink>
+          <ButtonLink href="#">Components Home (HTML anchor)</ButtonLink>
+          <ButtonLink href="#" disabled>Components Home (HTML anchor)</ButtonLink>
         </div>
       </Group>
 
