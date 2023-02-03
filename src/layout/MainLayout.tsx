@@ -4,11 +4,16 @@ import {Link} from 'react-router-dom'
 import { useCookies } from 'react-cookie'
 import { Search, ButtonLink, styled, darkMode, lightMode, Button } from '@libellum-ds/react'
 
-import { Group, Main } from '../components'
+import { Group } from '../components'
 
 type MainLayoutProps = PropsWithChildren
 type Theme = 'light' | 'dark'
 type ThemeCookie = {theme: Theme}
+
+export const Main = styled('main', {
+  height: '100vh',
+  backgroundColor: '$color-background'
+})
 
 export const MainLayout = ({ children }: MainLayoutProps) => {
 
