@@ -36,19 +36,27 @@ const ThemeProvider = ({ children }: ThemeProviderProps) => {
         toggleTheme,
     }
 
+
     useEffect(() => {
+        const themeName = cookies.theme || 'light'
+
         const body = document.querySelector('body')
-        if (body) {
+        if (body) {           
+            if (themeName === 'light') {
+                body.classList.remove(darkMode)
+                body.classList.add(lightMode)
+            } else {
+                body.classList.add(darkMode)
+                body.classList.remove(lightMode)
+            }
             body.style.backgroundColor = theme.colors['color-background'].value
         }
-        setThemeName(cookies.theme || 'light')
-    }, [theme])
+        setThemeName(themeName)
+    }, [cookies.theme, theme])
     
     return (
         <ThemeContext.Provider value={providerValues}>
-            <div className={theme}>
-                {children}
-            </div>
+            {children}
         </ThemeContext.Provider>
     )
 }
@@ -59,7 +67,7 @@ const useTheme = () => {
     if (!context) {
         throw new Error('useTheme must be use inside ThemeProvider')
     }
-    
+
     return context
 }
 
