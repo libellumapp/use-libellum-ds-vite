@@ -1,15 +1,15 @@
-import { Certificate, Text } from "@libellum-ds/react"
-import { MainLayout } from "./layout/MainLayout"
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { Components, Home } from "./pages";
+import { ThemeProvider } from './providers/ThemeProvider';
+import { routes } from './route';
+import globalCss from './styles/global'
 
 function App() {
+  {globalCss()}
   return (
-    <MainLayout>
-        <Text type="display" as="div">
-          <Certificate/>
-          Use Libellum DS - Home
-          <Certificate />
-        </Text>
-    </MainLayout>
+    <ThemeProvider>
+      <RouterProvider router={routes} />
+    </ThemeProvider>
   )
 }
 
