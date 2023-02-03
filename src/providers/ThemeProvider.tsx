@@ -7,7 +7,7 @@ type Theme = typeof darkMode
 type ThemeCookie = {theme: ThemeName}
 type ThemeContextType = {
     theme: Theme,
-    themeName: string,
+    themeName: ThemeName,
     toggleTheme: () => void
 }
 type ThemeProviderProps = PropsWithChildren
@@ -41,7 +41,7 @@ const ThemeProvider = ({ children }: ThemeProviderProps) => {
         const themeName = cookies.theme || 'light'
 
         const body = document.querySelector('body')
-        if (body) {           
+        if (body) {
             if (themeName === 'light') {
                 body.classList.remove(darkMode)
                 body.classList.add(lightMode)
@@ -53,7 +53,7 @@ const ThemeProvider = ({ children }: ThemeProviderProps) => {
         }
         setThemeName(themeName)
     }, [cookies.theme, theme])
-    
+
     return (
         <ThemeContext.Provider value={providerValues}>
             {children}

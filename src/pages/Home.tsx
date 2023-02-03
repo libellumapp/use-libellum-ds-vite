@@ -5,9 +5,7 @@ export const Home = () => {
   return (
     <MainLayout>
         <Text type="display" as="div">
-            <Certificate/>
-            Use Libellum DS - Home
-            <Certificate />
+            <Certificate/> Home <Certificate />
         </Text>
     </MainLayout>
   )

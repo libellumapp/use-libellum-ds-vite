@@ -1,46 +1,51 @@
-import { PropsWithChildren, useEffect, useState } from 'react'
+import { PropsWithChildren } from 'react'
 import {Link} from 'react-router-dom'
 
-import { Search, ButtonLink, styled, Button } from '@libellum-ds/react'
-
-import { Group } from '../components'
+import { ButtonLink, styled, Button, Certificate, Text } from '@libellum-ds/react'
 import { useTheme } from '../providers/ThemeProvider'
 
 type MainLayoutProps = PropsWithChildren
 
-export const Main = styled('main', {
-  height: '100vh',
-  backgroundColor: '$color-background'
+const Main = styled('main', {
+  maxWidth: '1024px',
+  margin: '40px auto 0',
+  padding: '0 $spacing-sm'
+})
+
+const Title = styled(Text, {
+  marginTop: '$spacing-sm'
+})
+
+const NavContainer = styled('nav', {
+  display: 'flex',
+  gap: '$spacing-sm',
+  padding: '$spacing-sm 0'
 })
 
 export const MainLayout = ({ children }: MainLayoutProps) => {
   const { toggleTheme, themeName } = useTheme()
 
-  const handleToggleTheme = () => {
-    toggleTheme()
-  }
-
   return (
-    <main>
-      <Button onClick={handleToggleTheme}>
-          {themeName.toUpperCase()}
+    <Main>
+      <Button onClick={toggleTheme}>
+        {themeName === 'light' ? 'dark' : 'light'}
       </Button>
 
-      <Group>
-          <ButtonLink as={Link} to="/">
-              <Search />
-              Home (Router Link)
-              <Search />
-          </ButtonLink>
+      <Title type="display" as="div">
+        <Certificate/> Use Libellum DS <Certificate />
+      </Title>
 
-          <ButtonLink as={Link} to="/components">
-              <Search />
-              Components (Router Link)
-              <Search />
-          </ButtonLink>
-      </Group>
+      <NavContainer>
+        <ButtonLink as={Link} to="/">
+          Home
+        </ButtonLink>
+
+        <ButtonLink as={Link} to="/components">
+          Components
+        </ButtonLink>
+      </NavContainer>
 
       {children}
-    </main>
+    </Main>
   )
 }
