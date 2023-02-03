@@ -13,6 +13,7 @@ export type ComponentLoaderData = {
 }
 
 export const load: LoaderFunction = async ({ request }): Promise<ComponentLoaderData> => {
+  console.log('passando no load do component')
   return json({
     ok: true
   } as ComponentLoaderData)
@@ -20,8 +21,7 @@ export const load: LoaderFunction = async ({ request }): Promise<ComponentLoader
 
 export const Components = ()  => {
   const loadData = useLoaderData() as ComponentLoaderData
-
-  console.log('loadData.ok at Component',loadData.ok)
+  // console.log('loadData.ok at Component',loadData.ok)
 
   return (
     <MainLayout>

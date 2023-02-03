@@ -1,4 +1,4 @@
-import { ButtonLink, Certificate, Search, Text } from '@libellum-ds/react'
+import { ButtonLink, Search, Text } from '@libellum-ds/react'
 import { Link } from 'react-router-dom'
 import { Group } from '../components'
 

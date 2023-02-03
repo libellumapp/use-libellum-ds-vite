@@ -1,4 +1,4 @@
-import { Button, Certificate, Search, Text } from '@libellum-ds/react'
+import { Button, Search, Text } from '@libellum-ds/react'
 import { Group } from '../components'
 
 export const ComponentButton = () => {

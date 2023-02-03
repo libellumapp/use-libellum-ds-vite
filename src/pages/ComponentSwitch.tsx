@@ -23,7 +23,6 @@ export const action: ActionFunction = async ({ request }): Promise<ActionData> =
 export const ComponentSwitch = () => {
   const actionData = useActionData() as ActionData
   const componentLoaderData = useRouteLoaderData('components') as ComponentLoaderData
-
   console.log('componentLoaderData.ok at ComponentSwitch',componentLoaderData.ok)
 
   const unControlledSwitchRef = useRef<HTMLButtonElement | null>(null)
