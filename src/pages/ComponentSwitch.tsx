@@ -1,6 +1,8 @@
 import { Button, Flag, Switch, Text } from '@libellum-ds/react'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { ActionFunction, Form, useActionData, useRouteLoaderData } from 'react-router-dom'
 import { Group } from '../components'
+import { ComponentLoaderData } from './Components'
 
 type FormSwitch = HTMLFormElement & {
   elements: {
@@ -8,7 +10,22 @@ type FormSwitch = HTMLFormElement & {
   }
 }
 
+type ActionData = {
+  uncontrolledSwitch: string | null
+}
+
+export const action: ActionFunction = async ({ request }): Promise<ActionData> => {
+  const formData = await request.formData()
+  const uncontrolledSwitch = formData.get('uncontrolledSwitch')?.toString() ?? null
+  return { uncontrolledSwitch }
+}
+
 export const ComponentSwitch = () => {
+  const actionData = useActionData() as ActionData
+  const componentLoaderData = useRouteLoaderData('components') as ComponentLoaderData
+
+  console.log('componentLoaderData.ok at ComponentSwitch',componentLoaderData.ok)
+
   const unControlledSwitchRef = useRef<HTMLButtonElement | null>(null)
   const unControlledSwitcMessagehRef = useRef<HTMLParagraphElement | null>(null)
   const [swtichValue, setSwitchValue] = useState(false)
@@ -26,18 +43,22 @@ export const ComponentSwitch = () => {
     })
   }
 
-    const handleUnControlledSwitchClick = () => {
-        const wasChecked = unControlledSwitchRef.current?.ariaChecked === 'true'
-        setSwitchValue(!wasChecked)
-      }
+  const handleUnControlledSwitchClick = () => {
+    const wasChecked = unControlledSwitchRef.current?.ariaChecked === 'true'
+    setSwitchValue(!wasChecked)
+  }
 
-      const handleUnControlledSwitchFormSubmit = (event: React.FormEvent<FormSwitch>) => {
-        event.preventDefault()
-        event.currentTarget
+  // const handleUnControlledSwitchFormSubmit = (event: React.FormEvent<FormSwitch>) => {
+  //   event.preventDefault()
+  //   event.currentTarget
 
-        const isUncontrolledSwitchChecked = event.currentTarget.elements?.uncontrolledSwitch.checked
-        if (unControlledSwitcMessagehRef.current) unControlledSwitcMessagehRef.current.innerText = `The submitted value is ${isUncontrolledSwitchChecked ? 'on' : 'off'}`
-      }
+  //   const isUncontrolledSwitchChecked = event.currentTarget.elements?.uncontrolledSwitch.checked
+  //   if (unControlledSwitcMessagehRef.current) unControlledSwitcMessagehRef.current.innerText = `The submitted value is ${isUncontrolledSwitchChecked ? 'on' : 'off'}`
+  // }
+
+  useEffect(() => {
+    if (unControlledSwitcMessagehRef.current) unControlledSwitcMessagehRef.current.innerText = `The submitted value is ${actionData?.uncontrolledSwitch ? 'on' : 'off'}`
+  }, [actionData?.uncontrolledSwitch])
 
   return (
     <>
@@ -57,7 +78,8 @@ export const ComponentSwitch = () => {
       <Group>
         <Text type="title" css={{ marginBottom: '$spacing-nano'}}>UnControlled</Text>
 
-        <form onSubmit={handleUnControlledSwitchFormSubmit}>
+        {/* <form onSubmit={handleUnControlledSwitchFormSubmit}> */}
+        <Form method='post'>
           <Switch
             name="uncontrolledSwitch"
             ref={unControlledSwitchRef}
@@ -74,7 +96,7 @@ export const ComponentSwitch = () => {
             <Flag />
             Enviar
           </Button>
-        </form>
+        </Form>
 
       </Group>
     </>

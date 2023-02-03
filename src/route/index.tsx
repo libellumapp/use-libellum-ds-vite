@@ -1,8 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Components, Home } from "../pages";
+import { Home } from "../pages";
+import { Components, load as componentLoader } from '../pages/Components'
 import { ComponentButton } from "../pages/ComponentButton";
 import { ComponentButtonLink } from "../pages/ComponentButtonLink";
-import { ComponentSwitch } from "../pages/ComponentSwitch";
+import { ComponentSwitch, action as componentSwitchAction } from "../pages/ComponentSwitch";
 
 export const routes = createBrowserRouter([
     {
@@ -10,8 +11,10 @@ export const routes = createBrowserRouter([
       element: <Home />,
     },
     {
+      id: 'components',
       path: "/components",
       element: <Components />,
+      loader: componentLoader,
       children: [
         {
           index: true,
@@ -27,7 +30,8 @@ export const routes = createBrowserRouter([
         },
         {
           path: 'switch',
-          element: <ComponentSwitch />
+          element: <ComponentSwitch />,
+          action: componentSwitchAction
         }
       ]
     },
