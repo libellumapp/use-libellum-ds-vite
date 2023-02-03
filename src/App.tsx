@@ -1,18 +1,15 @@
-import { ButtonLink } from "@libellum-ds/react"
-import { Link } from "react-router-dom"
+import { Certificate, Text } from "@libellum-ds/react"
+import { MainLayout } from "./layout/MainLayout"
 
 function App() {
   return (
-    <>
-      <ul>
-        <li>
-          <ButtonLink as={Link} to="/">Home</ButtonLink>
-        </li>
-        <li>
-          <ButtonLink as={Link} to="/components">Components</ButtonLink>
-        </li>
-      </ul>
-    </>
+    <MainLayout>
+        <Text type="display" as="div">
+          <Certificate/>
+          Use Libellum DS - Home
+          <Certificate />
+        </Text>
+    </MainLayout>
   )
 }
 

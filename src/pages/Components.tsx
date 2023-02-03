@@ -1,8 +1,8 @@
-import { Text, Certificate, lightMode, darkMode, Switch, Button, Search, ButtonLink } from '@libellum-ds/react'
+import { Text, Certificate, lightMode, darkMode, Switch, Button, Search, ButtonLink, Flag } from '@libellum-ds/react'
 import { useRef, useState } from 'react'
-import { useCookies } from 'react-cookie'
 import { Link } from 'react-router-dom'
-import { Group, Main, ToggleThemeButton, ToggleThemeContainer } from './App.styles'
+import { Group } from '../components'
+import { MainLayout } from '../layout/MainLayout'
 
 type FormSwitch = HTMLFormElement & {
   elements: {
@@ -10,25 +10,10 @@ type FormSwitch = HTMLFormElement & {
   }
 }
 
-type Theme = 'light' | 'dark'
-type ThemeCookie = {theme: Theme}
-
 export const Components = ()  => {
   const unControlledSwitchRef = useRef<HTMLButtonElement | null>(null)
   const unControlledSwitcMessagehRef = useRef<HTMLParagraphElement | null>(null)
-
-  const [cookies, setCookie] = useCookies<'theme', ThemeCookie>()
-  const [theme, setTheme] = useState<Theme>(cookies.theme ?? 'light')
   const [swtichValue, setSwitchValue] = useState(false)
-  const isDark = theme === 'dark'
-
-  const handleToggleTheme = () => {
-    setTheme(state => {
-      const newTheme = state === 'light' ? 'dark' : 'light'
-      setCookie('theme', newTheme)
-      return newTheme
-    })
-  }
 
   const handleControlledSwitchChange = () => {
     setSwitchValue(state => {
@@ -61,16 +46,11 @@ export const Components = ()  => {
 
 
   return (
-    <Main className={isDark ? darkMode: lightMode}>
-      <ToggleThemeContainer>
-        <ToggleThemeButton onClick={handleToggleTheme}>
-          {theme.toUpperCase()} 
-        </ToggleThemeButton>
-      </ToggleThemeContainer>
+    <MainLayout>
 
       <Text type="display" as="div">
         <Certificate/>
-        Use Libellum DS
+        Use Libellum DS - Components
         <Certificate />
       </Text>
 
@@ -128,6 +108,7 @@ export const Components = ()  => {
 
       <Group>
         <Text type="title">UnControlled Switch</Text>
+
         <form onSubmit={handleUnControlledSwitchFormSubmit}>
           <Switch 
             name="uncontrolledSwitch" 
@@ -136,11 +117,13 @@ export const Components = ()  => {
             onClick={handleUnControlledSwitchClick} 
           />
           <Text type="caption" ref={unControlledSwitcMessagehRef}>{`The state is`}</Text>
-          <button>Enviar</button>
+          <Button>
+            <Flag />
+            Enviar
+          </Button>
         </form>
       </Group>
-
-    </Main>
+    </MainLayout>
   )
 }
 
