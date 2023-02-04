@@ -28,6 +28,7 @@ export const load: LoaderFunction = async (): Promise<ComponentLoaderData> => {
 }
 
 export const Components = () => {
+  console.log('passando aqui')
   const loadData = useLoaderData() as ComponentLoaderData
   // console.log('loadData.ok at Component',loadData.ok)
 
