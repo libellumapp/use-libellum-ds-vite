@@ -1,5 +1,7 @@
-import { ButtonLink, Search, Text } from '@libellum-ds/react'
 import { Link } from 'react-router-dom'
+
+import { ButtonLink, Search, Text } from '@libellum-ds/react'
+
 import { Group } from '../components'
 
 export const ComponentButtonLink = () => {
@@ -20,10 +22,19 @@ export const ComponentButtonLink = () => {
             <Search /> Home (Router Link) <Search />
           </ButtonLink>
         </div>
-        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginTop: '20px' }}>
+        <div
+          style={{
+            display: 'flex',
+            gap: '10px',
+            flexWrap: 'wrap',
+            marginTop: '20px',
+          }}
+        >
           <ButtonLink href="#">Home (HTML anchor)</ButtonLink>
           <ButtonLink href="#">Components Home (HTML anchor)</ButtonLink>
-          <ButtonLink href="#" disabled>Components Home (HTML anchor)</ButtonLink>
+          <ButtonLink href="#" disabled>
+            Components Home (HTML anchor)
+          </ButtonLink>
         </div>
       </Group>
     </>

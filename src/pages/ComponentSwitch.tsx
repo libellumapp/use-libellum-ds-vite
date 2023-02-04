@@ -1,36 +1,52 @@
-import { Button, Flag, Switch, Text } from '@libellum-ds/react'
 import { useEffect, useRef, useState } from 'react'
-import { ActionFunction, Form, useActionData, useRouteLoaderData } from 'react-router-dom'
+import {
+  ActionFunction,
+  Form,
+  useActionData,
+  useRouteLoaderData,
+} from 'react-router-dom'
+
+import { Button, Flag, Switch, Text } from '@libellum-ds/react'
+
 import { Group } from '../components'
+
 import { ComponentLoaderData } from './Components'
 
-type FormSwitch = HTMLFormElement & {
-  elements: {
-    uncontrolledSwitch: HTMLInputElement
-  }
-}
+// type FormSwitch = HTMLFormElement & {
+//   elements: {
+//     uncontrolledSwitch: HTMLInputElement
+//   }
+// }
 
 type ActionData = {
   uncontrolledSwitch: string | null
 }
 
-export const action: ActionFunction = async ({ request }): Promise<ActionData> => {
+export const action: ActionFunction = async ({
+  request,
+}): Promise<ActionData> => {
   const formData = await request.formData()
-  const uncontrolledSwitch = formData.get('uncontrolledSwitch')?.toString() ?? null
+  const uncontrolledSwitch =
+    formData.get('uncontrolledSwitch')?.toString() ?? null
   return { uncontrolledSwitch }
 }
 
 export const ComponentSwitch = () => {
   const actionData = useActionData() as ActionData
-  const componentLoaderData = useRouteLoaderData('components') as ComponentLoaderData
-  console.log('componentLoaderData.ok at ComponentSwitch',componentLoaderData.ok)
+  const componentLoaderData = useRouteLoaderData(
+    'components'
+  ) as ComponentLoaderData
+  console.log(
+    'componentLoaderData.ok at ComponentSwitch',
+    componentLoaderData.ok
+  )
 
   const unControlledSwitchRef = useRef<HTMLButtonElement | null>(null)
   const unControlledSwitcMessagehRef = useRef<HTMLParagraphElement | null>(null)
   const [swtichValue, setSwitchValue] = useState(false)
 
   const handleControlledSwitchChange = () => {
-    setSwitchValue(state => {
+    setSwitchValue((state) => {
       const newValue = !state
 
       // Click on uncontrolled switch when state changes
@@ -56,7 +72,10 @@ export const ComponentSwitch = () => {
   // }
 
   useEffect(() => {
-    if (unControlledSwitcMessagehRef.current) unControlledSwitcMessagehRef.current.innerText = `The submitted value is ${actionData?.uncontrolledSwitch ? 'on' : 'off'}`
+    if (unControlledSwitcMessagehRef.current) {
+      const messageValue = actionData?.uncontrolledSwitch ? 'on' : 'off'
+      unControlledSwitcMessagehRef.current.innerText = `The submitted value is ${messageValue}`
+    }
   }, [actionData?.uncontrolledSwitch])
 
   return (
@@ -66,19 +85,29 @@ export const ComponentSwitch = () => {
       </Text>
 
       <Group>
-        <Text type="title" css={{ marginBottom: '$spacing-nano'}}>Controlled</Text>
-        <Switch checked={swtichValue} onCheckedChange={handleControlledSwitchChange}/>
-        <Text type="caption" css={{
+        <Text type="title" css={{ marginBottom: '$spacing-nano' }}>
+          Controlled
+        </Text>
+        <Switch
+          checked={swtichValue}
+          onCheckedChange={handleControlledSwitchChange}
+        />
+        <Text
+          type="caption"
+          css={{
             marginTop: '$spacing-nano',
-            marginBottom: '$spacing-nano'
-          }}>{`The state value is ${swtichValue ? 'on' : 'off'}`}</Text>
+            marginBottom: '$spacing-nano',
+          }}
+        >{`The state value is ${swtichValue ? 'on' : 'off'}`}</Text>
       </Group>
 
       <Group>
-        <Text type="title" css={{ marginBottom: '$spacing-nano'}}>UnControlled</Text>
+        <Text type="title" css={{ marginBottom: '$spacing-nano' }}>
+          UnControlled
+        </Text>
 
         {/* <form onSubmit={handleUnControlledSwitchFormSubmit}> */}
-        <Form method='post'>
+        <Form method="post">
           <Switch
             name="uncontrolledSwitch"
             ref={unControlledSwitchRef}
@@ -86,17 +115,20 @@ export const ComponentSwitch = () => {
             onClick={handleUnControlledSwitchClick}
           />
 
-          <Text type="caption" ref={unControlledSwitcMessagehRef} css={{
-            marginTop: '$spacing-nano',
-            marginBottom: '$spacing-nano'
-          }}>{`The submitted value is`}</Text>
+          <Text
+            type="caption"
+            ref={unControlledSwitcMessagehRef}
+            css={{
+              marginTop: '$spacing-nano',
+              marginBottom: '$spacing-nano',
+            }}
+          >{`The submitted value is`}</Text>
 
           <Button>
             <Flag />
             Enviar
           </Button>
         </Form>
-
       </Group>
     </>
   )

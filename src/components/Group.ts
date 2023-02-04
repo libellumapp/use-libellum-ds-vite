@@ -4,5 +4,5 @@ export const Group = styled('div', {
   border: '1px solid $color-neutral-50',
   borderRadius: '$sm',
   padding: '$spacing-xs',
-  marginTop: '$spacing-xs'
+  marginTop: '$spacing-xs',
 })

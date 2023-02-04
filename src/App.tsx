@@ -1,11 +1,13 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { Components, Home } from "./pages";
-import { ThemeProvider } from './providers/ThemeProvider';
-import { routes } from './route';
+import { RouterProvider } from 'react-router-dom'
+
+import { ThemeProvider } from './providers/ThemeProvider'
 import globalCss from './styles/global'
+import { routes } from './route'
 
 function App() {
-  {globalCss()}
+  {
+    globalCss()
+  }
   return (
     <ThemeProvider>
       <RouterProvider router={routes} />

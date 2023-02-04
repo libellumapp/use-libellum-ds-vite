@@ -1,7 +1,14 @@
 import { PropsWithChildren } from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
-import { ButtonLink, styled, Button, Certificate, Text } from '@libellum-ds/react'
+import {
+  Button,
+  ButtonLink,
+  Certificate,
+  styled,
+  Text,
+} from '@libellum-ds/react'
+
 import { useTheme } from '../providers/ThemeProvider'
 
 type MainLayoutProps = PropsWithChildren
@@ -9,17 +16,17 @@ type MainLayoutProps = PropsWithChildren
 const Main = styled('main', {
   maxWidth: '1024px',
   margin: '40px auto 0',
-  padding: '0 $spacing-sm'
+  padding: '0 $spacing-sm',
 })
 
 const Title = styled(Text, {
-  marginTop: '$spacing-sm'
+  marginTop: '$spacing-sm',
 })
 
 const NavContainer = styled('nav', {
   display: 'flex',
   gap: '$spacing-sm',
-  padding: '$spacing-sm 0'
+  padding: '$spacing-sm 0',
 })
 
 export const MainLayout = ({ children }: MainLayoutProps) => {
@@ -32,7 +39,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
       </Button>
 
       <Title type="display" as="div">
-        <Certificate/> Use Libellum DS <Certificate />
+        <Certificate /> Use Libellum DS <Certificate />
       </Title>
 
       <NavContainer>
