@@ -4,6 +4,7 @@ import * as yup from 'yup'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import {
+  ArrowTrening,
   ArrowUpload,
   Button,
   Delete,
@@ -20,22 +21,32 @@ import { Group } from '../components'
 type ControledForm = {
   firstName: string
   lastName: string
+  age: number
 }
 
 type FormData = {
   firstName: string
   lastName: string
+  age: number
 }
 
 const initialControlledFieldValues = {
   firstName: '',
   lastName: '',
+  age: 0,
 }
 
 const schema = yup
   .object({
     firstName: yup.string().required('First name is required'),
     lastName: yup.string().required('Lst name is required'),
+    age: yup
+      .number()
+      .transform((value) =>
+        isNaN(value) || value === null || value === undefined ? 0 : value
+      )
+      .min(10, 'Age is invalid. Must be greater than or equal 10')
+      .required('Age is required'),
   })
   .required()
 
@@ -43,6 +54,7 @@ export const ComponentInput = () => {
   const uncontrolledFormRef = useRef<HTMLFormElement | null>(null)
   const firstNameResultRef = useRef<HTMLParagraphElement | null>(null)
   const lastNameResultRef = useRef<HTMLParagraphElement | null>(null)
+  const ageResultRef = useRef<HTMLParagraphElement | null>(null)
 
   const firstNameResultReactHookFormRef = useRef<HTMLParagraphElement | null>(
     null
@@ -50,6 +62,7 @@ export const ComponentInput = () => {
   const lastNameResultReactHookFormRef = useRef<HTMLParagraphElement | null>(
     null
   )
+  const ageResultReactHookFormRef = useRef<HTMLParagraphElement | null>(null)
 
   const [isControlledFieldsDisabled, setIsControlledFieldsDisabled] =
     useState(false)
@@ -70,6 +83,7 @@ export const ComponentInput = () => {
     resetField,
     formState: { errors },
   } = useForm<FormData>({
+    values: initialControlledFieldValues,
     resolver: yupResolver(schema),
   })
 
@@ -101,12 +115,15 @@ export const ComponentInput = () => {
     const data = new FormData(event.currentTarget)
     const firstName = data.get('firstName')?.toString()
     const lastName = data.get('lastName')?.toString()
+    const age = data.get('age')?.toString()
 
     if (firstNameResultRef.current)
       firstNameResultRef.current.innerHTML = `firstName: ${firstName}`
 
     if (lastNameResultRef.current)
       lastNameResultRef.current.innerText = `lastName: ${lastName}`
+
+    if (ageResultRef.current) ageResultRef.current.innerText = `age: ${age}`
   }
 
   const cleanUncontrolledFields = () => {
@@ -115,17 +132,20 @@ export const ComponentInput = () => {
       firstNameResultRef.current.innerHTML = 'firstName: '
     if (lastNameResultRef.current)
       lastNameResultRef.current.innerText = 'lastName: '
+    if (ageResultRef.current) ageResultRef.current.innerText = 'age: '
   }
 
   //=========================================================================
   // React Hook Forms
   const handleReactHookFormSubmit = handleSubmit((data) => {
-    console.log(data)
     if (firstNameResultReactHookFormRef.current)
       firstNameResultReactHookFormRef.current.innerHTML = `firstName: ${data.firstName}`
 
     if (lastNameResultReactHookFormRef.current)
       lastNameResultReactHookFormRef.current.innerText = `lastName: ${data.lastName}`
+
+    if (ageResultReactHookFormRef.current)
+      ageResultReactHookFormRef.current.innerText = `age: ${data.age}`
   })
 
   const cleanUncontrolledReactHookFormFields = () => {
@@ -135,6 +155,8 @@ export const ComponentInput = () => {
       firstNameResultReactHookFormRef.current.innerHTML = 'firstName: '
     if (lastNameResultReactHookFormRef.current)
       lastNameResultReactHookFormRef.current.innerText = 'lastName: '
+    if (ageResultReactHookFormRef.current)
+      ageResultReactHookFormRef.current.innerText = 'age: '
   }
 
   return (
@@ -166,6 +188,16 @@ export const ComponentInput = () => {
           value={controlledFields.lastName}
           onChange={handleControlledFieldChange}
           onClear={() => changeControlledFieldValue('lastName', '')}
+        />
+        <Input
+          name="age"
+          label="Age"
+          type="number"
+          leftIcon={<ArrowTrening />}
+          disabled={isControlledFieldsDisabled}
+          value={controlledFields.age}
+          onChange={handleControlledFieldChange}
+          onClear={() => changeControlledFieldValue('age', '')}
         />
 
         <div
@@ -200,6 +232,7 @@ export const ComponentInput = () => {
         <Group>
           <Text type="body1">firstName: {controlledFields.firstName}</Text>
           <Text type="body1">lastName: {controlledFields.lastName}</Text>
+          <Text type="body1">age: {controlledFields.age}</Text>
         </Group>
       </Group>
 
@@ -227,6 +260,14 @@ export const ComponentInput = () => {
             onClear={() => {
               console.log('clean lastName ')
             }}
+          />
+          <Input
+            name="age"
+            label="Age"
+            type="number"
+            leftIcon={<ArrowTrening />}
+            disabled={isUncontrolledFieldsDisabled}
+            onClear={() => console.log('clean age ')}
           />
 
           <div
@@ -272,6 +313,9 @@ export const ComponentInput = () => {
           <Text type="body1" ref={lastNameResultRef}>
             lastName:{' '}
           </Text>
+          <Text type="body1" ref={ageResultRef}>
+            age:{' '}
+          </Text>
         </Group>
       </Group>
 
@@ -303,6 +347,18 @@ export const ComponentInput = () => {
             {...register('lastName')}
             hint={errors.lastName?.message}
             state={!errors.lastName?.message ? 'default' : 'error'}
+          />
+          <Input
+            label="Age"
+            type="number"
+            leftIcon={<ArrowTrening />}
+            disabled={isUncontrolledReactHookFormFieldsDisabled}
+            onClear={() => {
+              resetField('age')
+            }}
+            {...register('age')}
+            hint={errors.age?.message}
+            state={!errors.age?.message ? 'default' : 'error'}
           />
 
           <div
@@ -352,6 +408,9 @@ export const ComponentInput = () => {
           </Text>
           <Text type="body1" ref={lastNameResultReactHookFormRef}>
             lastName:{' '}
+          </Text>
+          <Text type="body1" ref={ageResultReactHookFormRef}>
+            age:{' '}
           </Text>
         </Group>
       </Group>
