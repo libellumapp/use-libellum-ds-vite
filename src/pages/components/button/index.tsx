@@ -23,6 +23,10 @@ export const ComponentButton = () => {
         <ButtonLink as={Link} to="link">
           Link Button
         </ButtonLink>
+
+        <ButtonLink as={Link} to="arrow">
+          Arrow Button
+        </ButtonLink>
       </NavContainer>
 
       <Outlet />

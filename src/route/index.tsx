@@ -3,6 +3,7 @@ import { createBrowserRouter } from 'react-router-dom'
 import { Home } from '../pages'
 import { Components, load as componentLoader } from '../pages/components'
 import { ComponentButton } from '../pages/components/button'
+import { ButtonArrow } from '../pages/components/button/button-arrow'
 import { ButtonLink } from '../pages/components/button/button-link'
 import { ButtonSimple } from '../pages/components/button/button-simple'
 import { ComponentInput } from '../pages/components/input'
@@ -42,6 +43,10 @@ export const routes = createBrowserRouter([
           {
             path: 'link',
             element: <ButtonLink />,
+          },
+          {
+            path: 'arrow',
+            element: <ButtonArrow />,
           },
         ],
       },
