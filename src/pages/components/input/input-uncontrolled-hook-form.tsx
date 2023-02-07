@@ -24,13 +24,13 @@ type FormData = {
   age: number
 }
 
-const initialControlledFieldValues = {
+const INITIAL_FORM_VALUES: FormData = {
   firstName: '',
   lastName: '',
   age: 0,
 }
 
-const schema = yup
+const FORM_SCHEMA_VALIDATION = yup
   .object({
     firstName: yup.string().required('First name is required'),
     lastName: yup.string().required('Lst name is required'),
@@ -45,18 +45,11 @@ const schema = yup
   .required()
 
 export const InputUncontrolledHookForm = () => {
-  const firstNameResultReactHookFormRef = useRef<HTMLParagraphElement | null>(
-    null
-  )
-  const lastNameResultReactHookFormRef = useRef<HTMLParagraphElement | null>(
-    null
-  )
-  const ageResultReactHookFormRef = useRef<HTMLParagraphElement | null>(null)
+  const [isFieldsDisabled, setIsFieldsDisabled] = useState(false)
 
-  const [
-    isUncontrolledReactHookFormFieldsDisabled,
-    setIsUncontrolledReactHookFormFieldsDisabled,
-  ] = useState(false)
+  const firstNameResultRef = useRef<HTMLParagraphElement | null>(null)
+  const lastNameResultRef = useRef<HTMLParagraphElement | null>(null)
+  const ageResultRef = useRef<HTMLParagraphElement | null>(null)
 
   const {
     register,
@@ -65,30 +58,29 @@ export const InputUncontrolledHookForm = () => {
     resetField,
     formState: { errors },
   } = useForm<FormData>({
-    values: initialControlledFieldValues,
-    resolver: yupResolver(schema),
+    values: INITIAL_FORM_VALUES,
+    resolver: yupResolver(FORM_SCHEMA_VALIDATION),
   })
 
-  const handleReactHookFormSubmit = handleSubmit((data) => {
-    if (firstNameResultReactHookFormRef.current)
-      firstNameResultReactHookFormRef.current.innerHTML = `firstName: ${data.firstName}`
+  const handleFormSubmit = handleSubmit((data) => {
+    if (firstNameResultRef.current)
+      firstNameResultRef.current.innerHTML = `firstName: ${data.firstName}`
 
-    if (lastNameResultReactHookFormRef.current)
-      lastNameResultReactHookFormRef.current.innerText = `lastName: ${data.lastName}`
+    if (lastNameResultRef.current)
+      lastNameResultRef.current.innerText = `lastName: ${data.lastName}`
 
-    if (ageResultReactHookFormRef.current)
-      ageResultReactHookFormRef.current.innerText = `age: ${data.age}`
+    if (ageResultRef.current)
+      ageResultRef.current.innerText = `age: ${data.age}`
   })
 
-  const cleanUncontrolledReactHookFormFields = () => {
-    reset(initialControlledFieldValues)
+  const cleanFields = () => {
+    reset(INITIAL_FORM_VALUES)
 
-    if (firstNameResultReactHookFormRef.current)
-      firstNameResultReactHookFormRef.current.innerHTML = 'firstName: '
-    if (lastNameResultReactHookFormRef.current)
-      lastNameResultReactHookFormRef.current.innerText = 'lastName: '
-    if (ageResultReactHookFormRef.current)
-      ageResultReactHookFormRef.current.innerText = 'age: '
+    if (firstNameResultRef.current)
+      firstNameResultRef.current.innerHTML = 'firstName: '
+    if (lastNameResultRef.current)
+      lastNameResultRef.current.innerText = 'lastName: '
+    if (ageResultRef.current) ageResultRef.current.innerText = 'age: '
   }
 
   return (
@@ -97,11 +89,11 @@ export const InputUncontrolledHookForm = () => {
         Uncontrolled - React Hook Form
       </Text>
       <Group>
-        <form onSubmit={handleReactHookFormSubmit}>
+        <form onSubmit={handleFormSubmit}>
           <Input
             label="First Name"
             leftIcon={<Person />}
-            disabled={isUncontrolledReactHookFormFieldsDisabled}
+            disabled={isFieldsDisabled}
             onClear={() => {
               resetField('firstName')
             }}
@@ -112,7 +104,7 @@ export const InputUncontrolledHookForm = () => {
           <Input
             label="Last Name"
             leftIcon={<PeopleTeam />}
-            disabled={isUncontrolledReactHookFormFieldsDisabled}
+            disabled={isFieldsDisabled}
             onClear={() => {
               resetField('lastName')
             }}
@@ -124,7 +116,7 @@ export const InputUncontrolledHookForm = () => {
             label="Age"
             type="number"
             leftIcon={<ArrowTrening />}
-            disabled={isUncontrolledReactHookFormFieldsDisabled}
+            disabled={isFieldsDisabled}
             onClear={() => {
               resetField('age')
             }}
@@ -147,11 +139,9 @@ export const InputUncontrolledHookForm = () => {
 
             <Button
               type="button"
-              onClick={() =>
-                setIsUncontrolledReactHookFormFieldsDisabled((state) => !state)
-              }
+              onClick={() => setIsFieldsDisabled((state) => !state)}
             >
-              {isUncontrolledReactHookFormFieldsDisabled ? (
+              {isFieldsDisabled ? (
                 <>
                   <Unlocked />
                   Enable Fields
@@ -164,10 +154,7 @@ export const InputUncontrolledHookForm = () => {
               )}
             </Button>
 
-            <Button
-              type="button"
-              onClick={cleanUncontrolledReactHookFormFields}
-            >
+            <Button type="button" onClick={cleanFields}>
               <Delete />
               Clean
             </Button>
@@ -175,14 +162,14 @@ export const InputUncontrolledHookForm = () => {
         </form>
 
         <Group>
-          <Text type="body1" ref={firstNameResultReactHookFormRef}>
-            firstName:{' '}
+          <Text type="body1" ref={firstNameResultRef}>
+            firstName:
           </Text>
-          <Text type="body1" ref={lastNameResultReactHookFormRef}>
-            lastName:{' '}
+          <Text type="body1" ref={lastNameResultRef}>
+            lastName:
           </Text>
-          <Text type="body1" ref={ageResultReactHookFormRef}>
-            age:{' '}
+          <Text type="body1" ref={ageResultRef}>
+            age:
           </Text>
         </Group>
       </Group>

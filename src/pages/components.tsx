@@ -43,12 +43,12 @@ export const Components = () => {
           Buttons
         </ButtonLink>
 
-        <ButtonLink as={Link} to="switch">
-          Switch
-        </ButtonLink>
-
         <ButtonLink as={Link} to="input">
           Input
+        </ButtonLink>
+
+        <ButtonLink as={Link} to="switch">
+          Switch
         </ButtonLink>
       </NavContainer>
 

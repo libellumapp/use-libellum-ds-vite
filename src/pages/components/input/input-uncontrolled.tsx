@@ -16,13 +16,14 @@ import {
 import { Group } from '../../../components'
 
 export const InputUncontrolled = () => {
-  const uncontrolledFormRef = useRef<HTMLFormElement | null>(null)
+  const [isFieldsDisabled, setIsFieldsDisabled] = useState(false)
+
+  const formRef = useRef<HTMLFormElement | null>(null)
+  const ageFieldRef = useRef<HTMLInputElement | null>(null)
+
   const firstNameResultRef = useRef<HTMLParagraphElement | null>(null)
   const lastNameResultRef = useRef<HTMLParagraphElement | null>(null)
   const ageResultRef = useRef<HTMLParagraphElement | null>(null)
-
-  const [isUncontrolledFieldsDisabled, setIsUncontrolledFieldsDisabled] =
-    useState(false)
 
   const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -40,8 +41,8 @@ export const InputUncontrolled = () => {
     if (ageResultRef.current) ageResultRef.current.innerText = `age: ${age}`
   }
 
-  const cleanUncontrolledFields = () => {
-    if (uncontrolledFormRef) uncontrolledFormRef.current?.reset()
+  const cleanFields = () => {
+    if (formRef) formRef.current?.reset()
     if (firstNameResultRef.current)
       firstNameResultRef.current.innerHTML = 'firstName: '
     if (lastNameResultRef.current)
@@ -55,12 +56,12 @@ export const InputUncontrolled = () => {
         Uncontrolled
       </Text>
       <Group>
-        <form onSubmit={handleFormSubmit} ref={uncontrolledFormRef}>
+        <form onSubmit={handleFormSubmit} ref={formRef}>
           <Input
             name="firstName"
             label="First Name"
             leftIcon={<Person />}
-            disabled={isUncontrolledFieldsDisabled}
+            disabled={isFieldsDisabled}
             onClear={() => {
               console.log('clean firstName ')
             }}
@@ -69,7 +70,7 @@ export const InputUncontrolled = () => {
             name="lastName"
             label="Last Name"
             leftIcon={<PeopleTeam />}
-            disabled={isUncontrolledFieldsDisabled}
+            disabled={isFieldsDisabled}
             onClear={() => {
               console.log('clean lastName ')
             }}
@@ -79,9 +80,12 @@ export const InputUncontrolled = () => {
             label="Age"
             type="number"
             leftIcon={<ArrowTrening />}
-            disabled={isUncontrolledFieldsDisabled}
-            onClear={() => console.log('clean age ')}
+            disabled={isFieldsDisabled}
+            onClear={() => {
+              if (ageFieldRef.current) ageFieldRef.current.value = '0'
+            }}
             defaultValue={0}
+            ref={ageFieldRef}
           />
 
           <div
@@ -98,9 +102,9 @@ export const InputUncontrolled = () => {
 
             <Button
               type="button"
-              onClick={() => setIsUncontrolledFieldsDisabled((state) => !state)}
+              onClick={() => setIsFieldsDisabled((state) => !state)}
             >
-              {isUncontrolledFieldsDisabled ? (
+              {isFieldsDisabled ? (
                 <>
                   <Unlocked />
                   Enable Fields
@@ -113,7 +117,7 @@ export const InputUncontrolled = () => {
               )}
             </Button>
 
-            <Button type="button" onClick={cleanUncontrolledFields}>
+            <Button type="button" onClick={cleanFields}>
               <Delete />
               Clean
             </Button>
@@ -122,13 +126,13 @@ export const InputUncontrolled = () => {
 
         <Group>
           <Text type="body1" ref={firstNameResultRef}>
-            firstName:{' '}
+            firstName:
           </Text>
           <Text type="body1" ref={lastNameResultRef}>
-            lastName:{' '}
+            lastName:
           </Text>
           <Text type="body1" ref={ageResultRef}>
-            age:{' '}
+            age:
           </Text>
         </Group>
       </Group>

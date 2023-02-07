@@ -1,7 +1,6 @@
-import { useEffect, useRef } from 'react'
+import { FormEvent, useEffect, useRef } from 'react'
 import {
   ActionFunction,
-  Form,
   useActionData,
   useRouteLoaderData,
 } from 'react-router-dom'
@@ -35,13 +34,27 @@ export const SwitchUncontrolled = () => {
     componentLoaderData.ok
   )
 
-  const unControlledSwitchRef = useRef<HTMLButtonElement | null>(null)
-  const unControlledSwitcMessagehRef = useRef<HTMLParagraphElement | null>(null)
+  const switcMessagehRef = useRef<HTMLParagraphElement | null>(null)
+
+  const handleUnControlledSwitchFormSubmit = (
+    event: FormEvent<HTMLFormElement>
+  ) => {
+    event.preventDefault()
+    const formData = new FormData(event.currentTarget)
+    const uncontrolledSwitchValue = formData
+      .get('uncontrolledSwitch')
+      ?.toString()
+
+    if (switcMessagehRef.current) {
+      const messageValue = uncontrolledSwitchValue ? 'on' : 'off'
+      switcMessagehRef.current.innerText = `The submitted value is ${messageValue}`
+    }
+  }
 
   useEffect(() => {
-    if (unControlledSwitcMessagehRef.current) {
+    if (switcMessagehRef.current) {
       const messageValue = actionData?.uncontrolledSwitch ? 'on' : 'off'
-      unControlledSwitcMessagehRef.current.innerText = `The submitted value is ${messageValue}`
+      switcMessagehRef.current.innerText = `The submitted value is ${messageValue}`
     }
   }, [actionData?.uncontrolledSwitch])
 
@@ -52,24 +65,33 @@ export const SwitchUncontrolled = () => {
       </Text>
 
       <Group>
-        {/* <form onSubmit={handleUnControlledSwitchFormSubmit}> */}
-        <Form method="post">
-          <Switch name="uncontrolledSwitch" ref={unControlledSwitchRef} />
+        <form onSubmit={handleUnControlledSwitchFormSubmit}>
+          {/* <Form method="post"> */}
+          <Switch name="uncontrolledSwitch" value="ligado" />
 
           <Text
             type="caption"
-            ref={unControlledSwitcMessagehRef}
+            ref={switcMessagehRef}
             css={{
               marginTop: '$spacing-nano',
               marginBottom: '$spacing-nano',
             }}
           >{`The submitted value is`}</Text>
 
-          <Button>
-            <Flag />
-            Enviar
-          </Button>
-        </Form>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+              columnGap: '10px',
+            }}
+          >
+            <Button>
+              <Flag />
+              Enviar
+            </Button>
+          </div>
+          {/* </Form> */}
+        </form>
       </Group>
     </>
   )

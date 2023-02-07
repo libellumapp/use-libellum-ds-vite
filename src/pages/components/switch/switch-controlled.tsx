@@ -21,10 +21,10 @@ export const SwitchControlled = () => {
     componentLoaderData.ok
   )
 
-  const unControlledSwitcMessagehRef = useRef<HTMLParagraphElement | null>(null)
+  const switcMessagehRef = useRef<HTMLParagraphElement | null>(null)
   const [swtichValue, setSwitchValue] = useState(false)
 
-  const handleControlledSwitchChange = () => {
+  const handleSwitchChange = () => {
     setSwitchValue((state) => {
       const newValue = !state
 
@@ -33,9 +33,9 @@ export const SwitchControlled = () => {
   }
 
   useEffect(() => {
-    if (unControlledSwitcMessagehRef.current) {
+    if (switcMessagehRef.current) {
       const messageValue = actionData?.uncontrolledSwitch ? 'on' : 'off'
-      unControlledSwitcMessagehRef.current.innerText = `The submitted value is ${messageValue}`
+      switcMessagehRef.current.innerText = `The submitted value is ${messageValue}`
     }
   }, [actionData?.uncontrolledSwitch])
 
@@ -46,10 +46,7 @@ export const SwitchControlled = () => {
       </Text>
 
       <Group>
-        <Switch
-          checked={swtichValue}
-          onCheckedChange={handleControlledSwitchChange}
-        />
+        <Switch checked={swtichValue} onCheckedChange={handleSwitchChange} />
         <Text
           type="caption"
           css={{

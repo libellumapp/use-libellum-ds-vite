@@ -21,37 +21,31 @@ type ControledForm = {
   age: number
 }
 
-const initialControlledFieldValues: ControledForm = {
+const INITIAL_FORM_VALUES: ControledForm = {
   firstName: '',
   lastName: '',
   age: 0,
 }
 
 export const InputControlled = () => {
-  const [isControlledFieldsDisabled, setIsControlledFieldsDisabled] =
-    useState(false)
+  const [isFieldsDisabled, setIsFieldsDisabled] = useState(false)
+  const [fields, setFields] = useState<ControledForm>(INITIAL_FORM_VALUES)
 
-  const [controlledFields, setControlledFields] = useState<ControledForm>(
-    initialControlledFieldValues
-  )
-
-  const changeControlledFieldValue = (field: string, value: string) => {
-    setControlledFields((state) => ({
+  const changeFieldValue = (field: string, value: string) => {
+    setFields((state) => ({
       ...state,
       [field]: value,
     }))
   }
 
-  const cleanControlledFields = () => {
-    setControlledFields(initialControlledFieldValues)
+  const cleanFields = () => {
+    setFields(INITIAL_FORM_VALUES)
   }
 
-  const handleControlledFieldChange = (
-    event: ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
     const field = event.currentTarget.name
     const value = event.currentTarget.value
-    changeControlledFieldValue(field, value)
+    changeFieldValue(field, value)
   }
 
   return (
@@ -64,29 +58,29 @@ export const InputControlled = () => {
           name="firstName"
           label="First Name"
           leftIcon={<Person />}
-          disabled={isControlledFieldsDisabled}
-          value={controlledFields.firstName}
-          onChange={handleControlledFieldChange}
-          onClear={() => changeControlledFieldValue('firstName', '')}
+          disabled={isFieldsDisabled}
+          value={fields.firstName}
+          onChange={handleFieldChange}
+          onClear={() => changeFieldValue('firstName', '')}
         />
         <Input
           name="lastName"
           label="Last Name"
           leftIcon={<PeopleTeam />}
-          disabled={isControlledFieldsDisabled}
-          value={controlledFields.lastName}
-          onChange={handleControlledFieldChange}
-          onClear={() => changeControlledFieldValue('lastName', '')}
+          disabled={isFieldsDisabled}
+          value={fields.lastName}
+          onChange={handleFieldChange}
+          onClear={() => changeFieldValue('lastName', '')}
         />
         <Input
           name="age"
           label="Age"
           type="number"
           leftIcon={<ArrowTrening />}
-          disabled={isControlledFieldsDisabled}
-          value={controlledFields.age}
-          onChange={handleControlledFieldChange}
-          onClear={() => changeControlledFieldValue('age', '')}
+          disabled={isFieldsDisabled}
+          value={fields.age}
+          onChange={handleFieldChange}
+          onClear={() => changeFieldValue('age', '0')}
         />
 
         <div
@@ -103,9 +97,9 @@ export const InputControlled = () => {
 
           <Button
             type="button"
-            onClick={() => setIsControlledFieldsDisabled((state) => !state)}
+            onClick={() => setIsFieldsDisabled((state) => !state)}
           >
-            {isControlledFieldsDisabled ? (
+            {isFieldsDisabled ? (
               <>
                 <Unlocked />
                 Enable Fields
@@ -117,16 +111,17 @@ export const InputControlled = () => {
               </>
             )}
           </Button>
-          <Button type="button" onClick={cleanControlledFields}>
+
+          <Button type="button" onClick={cleanFields}>
             <Delete />
             Clean
           </Button>
         </div>
 
         <Group>
-          <Text type="body1">firstName: {controlledFields.firstName}</Text>
-          <Text type="body1">lastName: {controlledFields.lastName}</Text>
-          <Text type="body1">age: {controlledFields.age}</Text>
+          <Text type="body1">firstName: {fields.firstName}</Text>
+          <Text type="body1">lastName: {fields.lastName}</Text>
+          <Text type="body1">age: {fields.age}</Text>
         </Group>
       </Group>
     </>
