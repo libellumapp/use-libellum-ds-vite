@@ -3,6 +3,7 @@ import { createBrowserRouter } from 'react-router-dom'
 import { Home } from '../pages'
 import { ComponentButton } from '../pages/ComponentButton'
 import { ComponentButtonLink } from '../pages/ComponentButtonLink'
+import { ComponentInput } from '../pages/ComponentInput'
 import { Components, load as componentLoader } from '../pages/Components'
 import {
   action as componentSwitchAction,
@@ -36,6 +37,10 @@ export const routes = createBrowserRouter([
         path: 'switch',
         element: <ComponentSwitch />,
         action: componentSwitchAction,
+      },
+      {
+        path: 'input',
+        element: <ComponentInput />,
       },
     ],
   },

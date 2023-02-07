@@ -50,6 +50,10 @@ export const Components = () => {
         <ButtonLink as={Link} to="switch">
           Switch
         </ButtonLink>
+
+        <ButtonLink as={Link} to="input">
+          Input
+        </ButtonLink>
       </NavContainer>
 
       <Outlet />
