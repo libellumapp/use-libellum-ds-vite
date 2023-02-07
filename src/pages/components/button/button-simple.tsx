@@ -1,12 +1,12 @@
 import { Button, Search, Text } from '@libellum-ds/react'
 
-import { Group } from '../components'
+import { Group } from '../../../components'
 
-export const ComponentButton = () => {
+export const ButtonSimple = () => {
   return (
     <>
       <Text type="display" as="div">
-        Buttons
+        Simple Button
       </Text>
 
       <Group>

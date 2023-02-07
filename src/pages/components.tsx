@@ -30,7 +30,7 @@ export const load: LoaderFunction = async (): Promise<ComponentLoaderData> => {
 export const Components = () => {
   console.log('passando aqui')
   const loadData = useLoaderData() as ComponentLoaderData
-  // console.log('loadData.ok at Component',loadData.ok)
+  console.log('loadData.ok at Component', loadData.ok)
 
   return (
     <MainLayout>
@@ -41,10 +41,6 @@ export const Components = () => {
       <NavContainer>
         <ButtonLink as={Link} to="button">
           Buttons
-        </ButtonLink>
-
-        <ButtonLink as={Link} to="button-link">
-          Button Link
         </ButtonLink>
 
         <ButtonLink as={Link} to="switch">
