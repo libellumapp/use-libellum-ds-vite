@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -10,8 +10,9 @@ import {
   Delete,
   Input,
   Locked,
-  PeopleTeam,
+  Password,
   Person,
+  Switch,
   Text,
   Unlocked,
 } from '@libellum-ds/react'
@@ -19,43 +20,54 @@ import {
 import { Group } from '../../../components'
 
 type FormData = {
-  firstName: string
-  lastName: string
+  user: string
+  password: string
   age: number
+  agreement: boolean
 }
 
 const INITIAL_FORM_VALUES: FormData = {
-  firstName: '',
-  lastName: '',
+  user: '',
+  password: '',
   age: 0,
+  agreement: false,
 }
 
 const FORM_SCHEMA_VALIDATION = yup
   .object({
-    firstName: yup.string().required('First name is required'),
-    lastName: yup.string().required('Lst name is required'),
+    user: yup
+      .string()
+      .required('User is required')
+      .min(5, 'User must be at least 5 characters long'),
+    password: yup
+      .string()
+      .required('Password is required')
+      .min(5, 'Password must be at least 5 characters long'),
     age: yup
       .number()
+      .required('Age is required')
       .transform((value) =>
         isNaN(value) || value === null || value === undefined ? 0 : value
       )
-      .min(10, 'Age is invalid. Must be greater than or equal 10')
-      .required('Age is required'),
+      .min(10, 'Age is invalid. Must be greater than or equal 10'),
+    agreement: yup.boolean(),
   })
   .required()
 
 export const InputUncontrolledHookForm = () => {
   const [isFieldsDisabled, setIsFieldsDisabled] = useState(false)
 
-  const firstNameResultRef = useRef<HTMLParagraphElement | null>(null)
-  const lastNameResultRef = useRef<HTMLParagraphElement | null>(null)
+  const userResultRef = useRef<HTMLParagraphElement | null>(null)
+  const passwordResultRef = useRef<HTMLParagraphElement | null>(null)
   const ageResultRef = useRef<HTMLParagraphElement | null>(null)
+  const agreementResultRef = useRef<HTMLParagraphElement | null>(null)
 
   const {
     register,
     handleSubmit,
     reset,
     resetField,
+    control,
     formState: { errors },
   } = useForm<FormData>({
     values: INITIAL_FORM_VALUES,
@@ -63,24 +75,28 @@ export const InputUncontrolledHookForm = () => {
   })
 
   const handleFormSubmit = handleSubmit((data) => {
-    if (firstNameResultRef.current)
-      firstNameResultRef.current.innerHTML = `firstName: ${data.firstName}`
+    if (userResultRef.current)
+      userResultRef.current.innerHTML = `user: ${data.user}`
 
-    if (lastNameResultRef.current)
-      lastNameResultRef.current.innerText = `lastName: ${data.lastName}`
+    if (passwordResultRef.current)
+      passwordResultRef.current.innerText = `password: ${data.password}`
 
     if (ageResultRef.current)
       ageResultRef.current.innerText = `age: ${data.age}`
+
+    if (agreementResultRef.current)
+      agreementResultRef.current.innerText = `agreement: ${data.agreement}`
   })
 
   const cleanFields = () => {
     reset(INITIAL_FORM_VALUES)
 
-    if (firstNameResultRef.current)
-      firstNameResultRef.current.innerHTML = 'firstName: '
-    if (lastNameResultRef.current)
-      lastNameResultRef.current.innerText = 'lastName: '
+    if (userResultRef.current) userResultRef.current.innerHTML = 'user: '
+    if (passwordResultRef.current)
+      passwordResultRef.current.innerText = 'password: '
     if (ageResultRef.current) ageResultRef.current.innerText = 'age: '
+    if (agreementResultRef.current)
+      agreementResultRef.current.innerText = 'agreement: '
   }
 
   return (
@@ -91,26 +107,27 @@ export const InputUncontrolledHookForm = () => {
       <Group>
         <form onSubmit={handleFormSubmit}>
           <Input
-            label="First Name"
+            label="User"
             leftIcon={<Person />}
             disabled={isFieldsDisabled}
             onClear={() => {
-              resetField('firstName')
+              resetField('user')
             }}
-            {...register('firstName')}
-            hint={errors.firstName?.message}
-            state={!errors.firstName?.message ? 'default' : 'error'}
+            {...register('user')}
+            hint={errors.user?.message}
+            state={!errors.user?.message ? 'default' : 'error'}
           />
           <Input
-            label="Last Name"
-            leftIcon={<PeopleTeam />}
+            type="password"
+            label="Password"
+            leftIcon={<Password />}
             disabled={isFieldsDisabled}
             onClear={() => {
-              resetField('lastName')
+              resetField('password')
             }}
-            {...register('lastName')}
-            hint={errors.lastName?.message}
-            state={!errors.lastName?.message ? 'default' : 'error'}
+            {...register('password')}
+            hint={errors.password?.message}
+            state={!errors.password?.message ? 'default' : 'error'}
           />
           <Input
             label="Age"
@@ -123,6 +140,22 @@ export const InputUncontrolledHookForm = () => {
             {...register('age')}
             hint={errors.age?.message}
             state={!errors.age?.message ? 'default' : 'error'}
+          />
+          <Controller
+            name="agreement"
+            control={control}
+            render={({ field }) => (
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  columnGap: '10px',
+                }}
+              >
+                <Switch {...field} disabled={isFieldsDisabled} />
+                <label htmlFor="agreement">Agreement</label>
+              </div>
+            )}
           />
 
           <div
@@ -162,14 +195,17 @@ export const InputUncontrolledHookForm = () => {
         </form>
 
         <Group>
-          <Text type="body1" ref={firstNameResultRef}>
-            firstName:
+          <Text type="body1" ref={userResultRef}>
+            user:
           </Text>
-          <Text type="body1" ref={lastNameResultRef}>
-            lastName:
+          <Text type="body1" ref={passwordResultRef}>
+            password:
           </Text>
           <Text type="body1" ref={ageResultRef}>
             age:
+          </Text>
+          <Text type="body1" ref={agreementResultRef}>
+            agreement:
           </Text>
         </Group>
       </Group>
