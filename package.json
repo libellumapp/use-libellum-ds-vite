@@ -13,8 +13,8 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^2.9.10",
-    "@libellum-ds/react": "^1.2.0",
-    "@libellum-ds/tokens": "^1.1.0",
+    "@libellum-ds/react": "file:../libellum-ds/packages/react",
+    "@libellum-ds/tokens": "file:../libellum-ds/packages/tokens",
     "react": "^18.2.0",
     "react-cookie": "^4.1.1",
     "react-dom": "^18.2.0",

@@ -41,6 +41,7 @@ export const SwitchUncontrolled = () => {
   ) => {
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
+
     const uncontrolledSwitchValue = formData
       .get('uncontrolledSwitch')
       ?.toString()
@@ -67,16 +68,8 @@ export const SwitchUncontrolled = () => {
       <Group>
         <form onSubmit={handleUnControlledSwitchFormSubmit}>
           {/* <Form method="post"> */}
-          <Switch name="uncontrolledSwitch" value="ligado" />
 
-          <Text
-            type="caption"
-            ref={switcMessagehRef}
-            css={{
-              marginTop: '$spacing-nano',
-              marginBottom: '$spacing-nano',
-            }}
-          >{`The submitted value is`}</Text>
+          <Switch name="uncontrolledSwitch" />
 
           <div
             style={{
@@ -92,6 +85,12 @@ export const SwitchUncontrolled = () => {
           </div>
           {/* </Form> */}
         </form>
+
+        <Group>
+          <Text type="body1" ref={switcMessagehRef}>
+            The submitted value is:
+          </Text>
+        </Group>
       </Group>
     </>
   )

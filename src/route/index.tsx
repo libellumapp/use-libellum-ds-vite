@@ -16,6 +16,7 @@ import {
   action as actionComponentSwitchUncontrolled,
   SwitchUncontrolled,
 } from '../pages/components/switch/switch-uncontrolled'
+import { SwitchUncontrolledHookForm } from '../pages/components/switch/switch-uncontrolled-hook-form'
 
 export const routes = createBrowserRouter([
   {
@@ -88,6 +89,10 @@ export const routes = createBrowserRouter([
             path: 'uncontrolled',
             element: <SwitchUncontrolled />,
             action: actionComponentSwitchUncontrolled,
+          },
+          {
+            path: 'uncontrolled-hook-form',
+            element: <SwitchUncontrolledHookForm />,
           },
         ],
       },

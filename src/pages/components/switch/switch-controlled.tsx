@@ -22,14 +22,10 @@ export const SwitchControlled = () => {
   )
 
   const switcMessagehRef = useRef<HTMLParagraphElement | null>(null)
-  const [swtichValue, setSwitchValue] = useState(false)
+  const [swtichValue, setSwitchValue] = useState(true)
 
-  const handleSwitchChange = () => {
-    setSwitchValue((state) => {
-      const newValue = !state
-
-      return newValue
-    })
+  const handleSwitchChange = (value: boolean) => {
+    setSwitchValue(value)
   }
 
   useEffect(() => {
@@ -46,14 +42,13 @@ export const SwitchControlled = () => {
       </Text>
 
       <Group>
-        <Switch checked={swtichValue} onCheckedChange={handleSwitchChange} />
-        <Text
-          type="caption"
-          css={{
-            marginTop: '$spacing-nano',
-            marginBottom: '$spacing-nano',
-          }}
-        >{`The state value is ${swtichValue ? 'on' : 'off'}`}</Text>
+        <Switch value={swtichValue} onChange={handleSwitchChange} />
+
+        <Group>
+          <Text type="body1" ref={switcMessagehRef}>
+            {`The submitted value is: ${swtichValue ? 'on' : 'off'}`}
+          </Text>
+        </Group>
       </Group>
     </>
   )

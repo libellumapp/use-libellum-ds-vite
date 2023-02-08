@@ -23,6 +23,10 @@ export const ComponentSwitch = () => {
         <ButtonLink as={Link} to="uncontrolled">
           Uncontrolled
         </ButtonLink>
+
+        <ButtonLink as={Link} to="uncontrolled-hook-form">
+          Uncontrolled - React Hook Form
+        </ButtonLink>
       </NavContainer>
 
       <Outlet />
