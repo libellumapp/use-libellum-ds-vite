@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -8,6 +8,9 @@ import {
   ArrowUpload,
   Button,
   Delete,
+  DropDown,
+  DropDownItem,
+  DropDownRef,
   Input,
   Locked,
   Password,
@@ -40,6 +43,12 @@ const INITIAL_FILLED_FORM_VALUES: FormData = {
   agreement: true,
 }
 
+const DROPDOWN_ITEMS = [
+  { value: 1, label: 'Item 01' },
+  { value: 2, label: 'Item 02' },
+  { value: 3, label: 'Item 03' },
+]
+
 const FORM_SCHEMA_VALIDATION = yup
   .object({
     user: yup
@@ -64,10 +73,13 @@ const FORM_SCHEMA_VALIDATION = yup
 export const InputUncontrolledHookForm = () => {
   const [isFieldsDisabled, setIsFieldsDisabled] = useState(false)
 
+  const itemDropdownRef = useRef<DropDownRef | null>(null)
+
   const userResultRef = useRef<HTMLParagraphElement | null>(null)
   const passwordResultRef = useRef<HTMLParagraphElement | null>(null)
   const ageResultRef = useRef<HTMLParagraphElement | null>(null)
   const agreementResultRef = useRef<HTMLParagraphElement | null>(null)
+  const itemResultRef = useRef<HTMLParagraphElement | null>(null)
 
   const {
     register,
@@ -81,7 +93,14 @@ export const InputUncontrolledHookForm = () => {
     resolver: yupResolver(FORM_SCHEMA_VALIDATION),
   })
 
-  const handleFormSubmit = handleSubmit((data) => {
+  const handleFormSubmit: SubmitHandler<FormData> = (data, event) => {
+    const formData = new FormData(event?.target)
+    const item = formData.get('item')
+
+    if (itemResultRef.current) {
+      itemResultRef.current.innerText = `item: ${item}`
+    }
+
     if (userResultRef.current)
       userResultRef.current.innerHTML = `user: ${data.user}`
 
@@ -93,11 +112,16 @@ export const InputUncontrolledHookForm = () => {
 
     if (agreementResultRef.current)
       agreementResultRef.current.innerText = `agreement: ${data.agreement}`
-  })
+  }
 
   const cleanFields = () => {
     reset(INITIAL_FORM_VALUES)
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    itemDropdownRef.current.reset()
+
+    if (itemResultRef.current) itemResultRef.current.innerHTML = 'item: '
     if (userResultRef.current) userResultRef.current.innerHTML = 'user: '
     if (passwordResultRef.current)
       passwordResultRef.current.innerText = 'password: '
@@ -112,7 +136,22 @@ export const InputUncontrolledHookForm = () => {
         Uncontrolled - React Hook Form
       </Text>
       <Group>
-        <form onSubmit={handleFormSubmit}>
+        <form onSubmit={handleSubmit(handleFormSubmit)}>
+          <DropDown
+            name="item"
+            label="Select an item"
+            disabled={isFieldsDisabled}
+            value={2}
+            ref={itemDropdownRef}
+          >
+            <DropDownItem value={undefined}></DropDownItem>
+            {DROPDOWN_ITEMS.map(({ value, label }) => (
+              <DropDownItem key={value} value={value}>
+                {label}
+              </DropDownItem>
+            ))}
+          </DropDown>
+
           <Input
             label="User"
             leftIcon={<Person />}
@@ -202,6 +241,9 @@ export const InputUncontrolledHookForm = () => {
         </form>
 
         <Group>
+          <Text type="body1" ref={itemResultRef}>
+            item:
+          </Text>
           <Text type="body1" ref={userResultRef}>
             user:
           </Text>
