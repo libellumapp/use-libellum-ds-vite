@@ -7,7 +7,9 @@ import {
   Delete,
   DropDown,
   DropDownItem,
+  DropDownRef,
   Input,
+  InputRef,
   Locked,
   PeopleTeam,
   Person,
@@ -27,8 +29,8 @@ export const InputUncontrolled = () => {
   const [isFieldsDisabled, setIsFieldsDisabled] = useState(false)
 
   const formRef = useRef<HTMLFormElement | null>(null)
-  const ageFieldRef = useRef<HTMLInputElement | null>(null)
-  const itemldRef = useRef<HTMLInputElement | null>(null)
+  const ageFieldRef = useRef<InputRef | null>(null)
+  const itemDropdownRef = useRef<DropDownRef | null>(null)
 
   const firstNameResultRef = useRef<HTMLParagraphElement | null>(null)
   const lastNameResultRef = useRef<HTMLParagraphElement | null>(null)
@@ -55,11 +57,19 @@ export const InputUncontrolled = () => {
   }
 
   const cleanFields = () => {
-    if (formRef) formRef.current?.reset()
+    if (formRef.current) {
+      Array.from(formRef.current.elements).forEach((field) => {
+        const element = field as HTMLInputElement
+
+        if (['text', 'number'].includes(element.type)) {
+          element.value = ''
+        }
+      })
+    }
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
-    itemldRef.current?.reset()
+    itemDropdownRef.current?.reset()
 
     if (itemResultRef.current) itemResultRef.current.innerHTML = 'item: '
     if (firstNameResultRef.current)
@@ -79,8 +89,9 @@ export const InputUncontrolled = () => {
           <DropDown
             name="item"
             label="Select an item"
-            ref={itemldRef}
+            ref={itemDropdownRef}
             disabled={isFieldsDisabled}
+            value={2}
           >
             <DropDownItem value={undefined}></DropDownItem>
             {DROPDOWN_ITEMS.map(({ value, label }) => (
@@ -95,6 +106,7 @@ export const InputUncontrolled = () => {
             label="First Name"
             leftIcon={<Person />}
             disabled={isFieldsDisabled}
+            defaultValue="Ricardo"
             onClear={() => {
               console.log('clean firstName ')
             }}
@@ -104,6 +116,7 @@ export const InputUncontrolled = () => {
             label="Last Name"
             leftIcon={<PeopleTeam />}
             disabled={isFieldsDisabled}
+            defaultValue="Ruiz"
             onClear={() => {
               console.log('clean lastName ')
             }}
@@ -114,10 +127,10 @@ export const InputUncontrolled = () => {
             type="number"
             leftIcon={<ArrowTrening />}
             disabled={isFieldsDisabled}
+            defaultValue={0}
             onClear={() => {
               if (ageFieldRef.current) ageFieldRef.current.value = '0'
             }}
-            defaultValue={0}
             ref={ageFieldRef}
           />
 
