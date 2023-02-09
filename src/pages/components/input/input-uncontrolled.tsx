@@ -5,6 +5,8 @@ import {
   ArrowUpload,
   Button,
   Delete,
+  DropDown,
+  DropDownItem,
   Input,
   Locked,
   PeopleTeam,
@@ -15,15 +17,23 @@ import {
 
 import { Group } from '../../../components'
 
+const DROPDOWN_ITEMS = [
+  { value: 1, label: 'Item 01' },
+  { value: 2, label: 'Item 02' },
+  { value: 3, label: 'Item 03' },
+]
+
 export const InputUncontrolled = () => {
   const [isFieldsDisabled, setIsFieldsDisabled] = useState(false)
 
   const formRef = useRef<HTMLFormElement | null>(null)
   const ageFieldRef = useRef<HTMLInputElement | null>(null)
+  const itemldRef = useRef<HTMLInputElement | null>(null)
 
   const firstNameResultRef = useRef<HTMLParagraphElement | null>(null)
   const lastNameResultRef = useRef<HTMLParagraphElement | null>(null)
   const ageResultRef = useRef<HTMLParagraphElement | null>(null)
+  const itemResultRef = useRef<HTMLParagraphElement | null>(null)
 
   const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -31,6 +41,9 @@ export const InputUncontrolled = () => {
     const firstName = data.get('firstName')?.toString()
     const lastName = data.get('lastName')?.toString()
     const age = data.get('age')?.toString()
+    const item = data.get('item')?.toString()
+
+    if (itemResultRef.current) itemResultRef.current.innerText = `item: ${item}`
 
     if (firstNameResultRef.current)
       firstNameResultRef.current.innerHTML = `firstName: ${firstName}`
@@ -43,6 +56,12 @@ export const InputUncontrolled = () => {
 
   const cleanFields = () => {
     if (formRef) formRef.current?.reset()
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    itemldRef.current?.reset()
+
+    if (itemResultRef.current) itemResultRef.current.innerHTML = 'item: '
     if (firstNameResultRef.current)
       firstNameResultRef.current.innerHTML = 'firstName: '
     if (lastNameResultRef.current)
@@ -57,6 +76,20 @@ export const InputUncontrolled = () => {
       </Text>
       <Group>
         <form onSubmit={handleFormSubmit} ref={formRef}>
+          <DropDown
+            name="item"
+            label="Select an item"
+            ref={itemldRef}
+            disabled={isFieldsDisabled}
+          >
+            <DropDownItem value={undefined}></DropDownItem>
+            {DROPDOWN_ITEMS.map(({ value, label }) => (
+              <DropDownItem key={value} value={value}>
+                {label}
+              </DropDownItem>
+            ))}
+          </DropDown>
+
           <Input
             name="firstName"
             label="First Name"
@@ -125,6 +158,9 @@ export const InputUncontrolled = () => {
         </form>
 
         <Group>
+          <Text type="body1" ref={itemResultRef}>
+            item:
+          </Text>
           <Text type="body1" ref={firstNameResultRef}>
             firstName:
           </Text>

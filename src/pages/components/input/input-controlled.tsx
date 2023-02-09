@@ -1,10 +1,13 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react'
 
 import {
   ArrowTrening,
   ArrowUpload,
   Button,
   Delete,
+  DropDown,
+  DropDownItem,
+  DropDownItemValue,
   Input,
   Locked,
   PeopleTeam,
@@ -16,15 +19,30 @@ import {
 import { Group } from '../../../components'
 
 type ControledForm = {
+  item: DropDownItemValue | null
   firstName: string
   lastName: string
   age: number
 }
 
-const INITIAL_FORM_VALUES: ControledForm = {
+const DROPDOWN_ITEMS = [
+  { value: 1, label: 'Item 01' },
+  { value: 2, label: 'Item 02' },
+  { value: 3, label: 'Item 03' },
+]
+
+const INITIAL_FORM_VALUES = {
+  item: null,
   firstName: '',
   lastName: '',
   age: 0,
+}
+
+const INITIAL_FILLED_FORM_VALUES: ControledForm = {
+  item: 2,
+  firstName: 'Ricardo',
+  lastName: 'Ruiz',
+  age: 44,
 }
 
 export const InputControlled = () => {
@@ -48,12 +66,48 @@ export const InputControlled = () => {
     changeFieldValue(field, value)
   }
 
+  const handleDropDownChange = useCallback(
+    (item: DropDownItemValue | undefined) => {
+      setFields((state) => ({
+        ...state,
+        item: item ?? null,
+      }))
+    },
+    []
+  )
+
+  const itemLabel = useMemo(
+    () =>
+      DROPDOWN_ITEMS.find((item) => item.value === fields.item)?.label ?? '',
+    [fields.item]
+  )
+
+  useEffect(() => {
+    // setFields(INITIAL_FORM_VALUES)
+    setFields(INITIAL_FILLED_FORM_VALUES)
+  }, [])
+
   return (
     <>
       <Text type="display" as="div">
         Controlled
       </Text>
       <Group>
+        <DropDown
+          name="item"
+          label="Select an item"
+          value={fields.item}
+          onSelect={handleDropDownChange}
+          disabled={isFieldsDisabled}
+        >
+          <DropDownItem value={undefined}></DropDownItem>
+          {DROPDOWN_ITEMS.map(({ value, label }) => (
+            <DropDownItem key={value} value={value}>
+              {label}
+            </DropDownItem>
+          ))}
+        </DropDown>
+
         <Input
           name="firstName"
           label="First Name"
@@ -119,6 +173,9 @@ export const InputControlled = () => {
         </div>
 
         <Group>
+          <Text type="body1">
+            item: {fields.item ? `value=${fields.item} label=${itemLabel}` : ''}
+          </Text>
           <Text type="body1">firstName: {fields.firstName}</Text>
           <Text type="body1">lastName: {fields.lastName}</Text>
           <Text type="body1">age: {fields.age}</Text>

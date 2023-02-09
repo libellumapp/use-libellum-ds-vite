@@ -33,6 +33,13 @@ const INITIAL_FORM_VALUES: FormData = {
   agreement: false,
 }
 
+const INITIAL_FILLED_FORM_VALUES: FormData = {
+  user: 'rruiz',
+  password: '123456',
+  age: 44,
+  agreement: true,
+}
+
 const FORM_SCHEMA_VALIDATION = yup
   .object({
     user: yup
@@ -70,7 +77,7 @@ export const InputUncontrolledHookForm = () => {
     control,
     formState: { errors },
   } = useForm<FormData>({
-    values: INITIAL_FORM_VALUES,
+    values: INITIAL_FILLED_FORM_VALUES,
     resolver: yupResolver(FORM_SCHEMA_VALIDATION),
   })
 
@@ -111,7 +118,7 @@ export const InputUncontrolledHookForm = () => {
             leftIcon={<Person />}
             disabled={isFieldsDisabled}
             onClear={() => {
-              resetField('user')
+              resetField('user', { defaultValue: '' })
             }}
             {...register('user')}
             hint={errors.user?.message}
@@ -123,7 +130,7 @@ export const InputUncontrolledHookForm = () => {
             leftIcon={<Password />}
             disabled={isFieldsDisabled}
             onClear={() => {
-              resetField('password')
+              resetField('password', { defaultValue: '' })
             }}
             {...register('password')}
             hint={errors.password?.message}
@@ -135,7 +142,7 @@ export const InputUncontrolledHookForm = () => {
             leftIcon={<ArrowTrening />}
             disabled={isFieldsDisabled}
             onClear={() => {
-              resetField('age')
+              resetField('age', { defaultValue: 0 })
             }}
             {...register('age')}
             hint={errors.age?.message}
